@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Etsy Sales Map</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="node_modules\leaflet\dist\leaflet.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
     <link
       rel="stylesheet"
@@ -12,14 +13,46 @@
       integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
       crossorigin=""
     />
-     <!-- Make sure you put this AFTER Leaflet's CSS -->
- <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-   crossorigin=""></script>
-    <script src="main.js"></script>
   </head>
   <body>
-     <div id="mapid"></div>
-     <div class="footer">© OpenStreetMap contributors.OpenStreetMap® is open data, licensed under the Open Data Commons Open Database License (ODbL) by the OpenStreetMap Foundation (OSMF).</div>
+    <div class="input-csv">
+      <form action="form-handler.php" method="post" enctype="multipart/form-data">
+        <label for="input-file">CSV File:</label>
+        <input type="file" name="csv" class="csv" id="csv" accept=".csv" />
+        <input type="submit" value="Submit" name="submit" id="submit" />
+      </form>
+    </div>
+    <div id="mapid"></div>
+
+    <div class="footer">
+      © OpenStreetMap contributors.OpenStreetMap® is open data, licensed under
+      the Open Data Commons Open Database License (ODbL) by the OpenStreetMap
+      Foundation (OSMF).<br />© 2021 WILDBOT3D®
+    </div>
+
+    <script src="node_modules\leaflet\dist\leaflet.js"></script>
+    <!-- <script type="text/javascript" src="data.json"></script>
+    <script type="text/javascript" src="javascript.js"></script> -->
+
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script
+      src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+      integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+      crossorigin=""
+    ></script>
+    <script src="script.js"></script>
+    <script>
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution:
+          '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>',
+        maxZoom: 5,
+        // id: 'mapbox/streets-v11',
+        tileSize: 512,
+        zoomOffset: -1,
+        // accessToken: 'your.mapbox.access.token'
+      }).addTo(mymap);
+    </script>
+  
+  
   </body>
 </html>
