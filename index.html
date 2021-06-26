@@ -16,11 +16,10 @@
   </head>
   <body>
     <div class="input-csv">
-      <form action="form-handler.php" method="post" enctype="multipart/form-data">
+      <form id="fileForm">
         <label for="input-file">CSV File:</label>
-        <input type="file" name="csv" class="csv" id="csv" accept=".csv" />
-        <input type="submit" value="Submit" name="submit" id="submit" />
-      </form>
+        <input type="file" name="csv" class="csv" id="csvFile" accept=".csv" />
+        <input type="submit" value="Submit"/>
     </div>
     <div id="mapid"></div>
 
@@ -52,7 +51,5 @@
         // accessToken: 'your.mapbox.access.token'
       }).addTo(mymap);
     </script>
-  
-  
   </body>
 </html>

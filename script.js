@@ -1,21 +1,16 @@
 const mymap = L.map('mapid').setView([39.922072, -97.685021], 1);
-let wash = L.marker([34.9732829, -85.2921987]).addTo(mymap);
-let allgood = L.marker([34.9334, -85.35164]).addTo(mymap);
-let brok = L.marker([36.00199, -95.80714]).addTo(mymap);
 
 //**  https://api.tomtom.com/search/2/geocode/query%url%encoded.js?key=dwnHP6iVdrF1BBg428u08xVJ4t3gGRln */
 //??  results.position.lat :: results.position.lon
 
 // const markerArray = [];
-// let tomTomResult = fetch(
-//   'https://api.tomtom.com/search/2/geocode/1705%20Holiness%20Campground%20Rd%20Cleveland%20GA%2030528-5026%20United%20States.js?limit=1&language=en-US&key=dwnHP6iVdrF1BBg428u08xVJ4t3gGRln'
-// );
+// let tomTomResult = fetch();
+// // 'https://api.tomtom.com/search/2/geocode/1705%20Holiness%20Campground%20Rd%20Cleveland%20GA%2030528-5026%20United%20States.js?limit=1&language=en-US&key=dwnHP6iVdrF1BBg428u08xVJ4t3gGRln'
 // // ('https://api.tomtom.com/search/2/geocode/1111%20Street%20Name%20City%20State%20Country.js?limit=1&language=en-US&key=dwnHP6iVdrF1BBg428u08xVJ4t3gGRln');
 // markerArray.push(tomTomResult);
 // console.log(markerArray);
 
-// const api_url =
-//   'https://api.tomtom.com/search/2/geocode/1705%20Holiness%20Campground%20Rd%20Cleveland%20GA%2030528-5026%20United%20States.js?limit=1&language=en-US&key=dwnHP6iVdrF1BBg428u08xVJ4t3gGRln';
+// const api_url = el;
 // async function getapi(url) {
 //   const response = await fetch(url);
 //   let data = await response();
@@ -24,101 +19,188 @@ let brok = L.marker([36.00199, -95.80714]).addTo(mymap);
 //   show(data);
 // }
 
-// getapi(api_url);
-// const file = document.getElementById('#csv').value;
-// let csv = {};
-// console.log(file);
-// let data = JSON.parse(file);
-// console.log(file);
-// document.querySelector('.btn-submit').addEventListener('click', orders);
-// JSON.stringify(csv);
-// function orders() {
-//   const file = [];
-//   file.push(document.getElementById('#csv')).value;
-//   console.log(file);
-//   let result = [];
-//   let headers = lines[0].split(',');
-//   for (let i = 1; i < lines.length; i++) {
-//     let obj = {};
-//     let currentline = lines[i].split(',');
-//     for (let j = 0; j < headers.length; j++) {
-//       obj[headers[j]] = currentline[j];
-//     }
+const form = document.getElementById('fileForm');
+const csvFile = document.getElementById('csvFile');
+const geoData = [];
+const addresses = [];
+const links = [];
+const linksFor = [];
+const coords = [];
+// form.addEventListener('submit', function (e) {
+//   e.preventDefault();
+//   console.log('Form Submitted');
+function markMap(file) {
+  const input = file.files[0];
+  const reader = new FileReader();
 
-//     result.push(obj);
-//   }
-//   console.log(headers);
-//   console.log(lines);
-//   console.log(result);
-//   console.log(JSON.stringify(result));
-//   //return result; //JavaScript object
-//   return JSON.stringify(result); //JSON
-// }
+  reader.onload = function (event) {
+    const text = event.target.result;
+    let data = csvToArray(text);
+    console.log(data);
 
-// const address = function(arr) {
-//   orders.forEach(function (order, i, arr) {
-//     arr.from(orders)
-//     arr.push(
-//       `${Street1} + ' ' + ${Street2} + ' ' +  ${shipCity} + ' ' +  ${shipState} + ' ' +  ${shipZipcode} + ' ' +  ${shipCountry}`
-//     );
-//   });
-// };
-// const coords = address.forEach(e => {});
-// function getCSV() {
-//   let data = document.getElementById('csv').files[0];
-//   let entry = document.getElementById('csv').files[0];
-//   console.log('getCSV', entry, data);
-//   fetch('uploads/' + encodeURIComponent(entry.name), {
-//     method: 'PUT',
-//     body: data,
-//   });
-//   // alert('You file has been uploaded');
-//   // location.reload();
-// }
-
-const csv = document.getElementById('input#csv.csv');
-const upload = function () {
-  console.log(csv.file);
-  console.log(csv);
-  console.log(file);
-  const jsonFile = JSON.parse(csv.file);
-  console.log(jsonFile);
-};
-const submit = document.getElementById('#btn-submit');
-
-// //!! geoJSON  !!
-// // submit.addEventListener('click', upload(csv.file));
-// // const locations = Array.from(csv.file);
-// const inputElement = document.getElementById('#csv');
-// function getCSV(file) {
-//   let fileList = inputElement[0];
-//   console.log(fileList);
-//   console.log(file);
-//   //TODO do something with fileList.
-// }
-
-//let csv is the CSV file with headers
-function csvJSON(csv) {
-  let lines = csv[0];
-
-  let result = [];
-
-  let headers = lines[0].split(',');
-
-  for (let i = 1; i < lines.length; i++) {
-    let obj = {};
-    let currentline = lines[i].split(',');
-
-    for (let j = 0; j < headers.length; j++) {
-      obj[headers[j]] = currentline[j];
+    getGeoData(data, geoData);
+    if (geoData.length >= data.length) {
+      cleanData(geoData, addresses);
+      console.log(addresses);
     }
+    if (addresses.length >= geoData.length) {
+      getLinksFor(addresses, linksFor);
+    }
+    if (linksFor.length > 0) {
+      coords.push(api(linksFor));
+    }
+  };
+  // console.log(data);
+  reader.readAsText(input);
+}
+// let completed = addresses.length >= geoData.length;
+// if (addresses.length > 0) {
+//   function makePromise(completed) {
+//     return new Promise(function (resolve) {
+//       if (completed) {
+//         resolve(getLinksFor(addresses, linksFor));
+//       }
+//     });
+//   }
+// }
 
-    result.push(obj);
+function csvToArray(str, delimiter = ',') {
+  const headers = str.slice(0, str.indexOf('\n')).split(delimiter);
+  // console.log('h', headers);
+  const rows = str.slice(str.indexOf('\n') + 1).split('\n');
+  // console.log('r', rows);
+  const arr = rows.map(function (row) {
+    const values = row.split(delimiter);
+    const el = headers.reduce(function (object, header, index) {
+      object[header] = values[index];
+      return object;
+    }, {});
+    return el;
+  });
+  return arr;
+}
+function cleanData(arr, arr2) {
+  arr.forEach(function (str) {
+    arr2.push(encodeURIComponent(str));
+  });
+}
+form.addEventListener('submit', function (e) {
+  e.preventDefault();
+  console.log('Form Submitted');
+  markMap(csvFile);
+});
+
+function getGeoData(arr, arr2) {
+  arr.forEach(function (el) {
+    const shipCity = el['Ship City'];
+    const shipCountry = el['Ship Country'];
+    const shipState = el['Ship State'];
+    const shipZipcode = el['Ship Zipcode'];
+    const street1 = el['Street 1'];
+    arr2.push(
+      `${street1} ${shipCity}, ${shipState}, ${shipZipcode}, ${shipCountry}`
+    );
+    return arr2;
+  });
+}
+function getLinksFor(arr, arr2) {
+  for (let i = 0; i < arr.length; i++) {
+    let str = arr[i];
+    arr2.push(
+      `https://api.tomtom.com/search/2/geocode/${str}.js?limit=1&language=en-US&key=dwnHP6iVdrF1BBg428u08xVJ4t3gGRln`
+    );
   }
-  console.log(lines);
-  console.log(result);
-  console.log(lines);
-
-  //return result; //JavaScript object
-  return JSON.stringify(result);
-} //JSON
+  console.log(arr2);
+}
+// function api(arr, arr2) {
+//   arr.forEach(async function (el) {
+//     const url = el;
+//     const response = await fetch(url)
+//       .then(response => {
+//         return response.json();
+//       })
+//       .then(
+//         arr2.push(
+//           response.results.position.lat + ', ' + repsonse.results.position.lon
+//         )
+//       )
+//       .then(console.log(response.results));
+//   });
+// }
+function api(arr) {
+  arr.forEach(async function (el) {
+    try {
+      const response = await fetch(el);
+      const lat = JSON.stringify(await response.cb.results[0].position.lat);
+      const lon = JSON.stringify(await response.cb.results[0].position.lon);
+      const data = lat + ', ' + lon;
+      console.log(data);
+      console.log(response.json);
+      // const coordinates =
+      //   data.cb.results.position.lat + ', ' + data.cb.results.position.lon;
+      return [lat, lon];
+    } catch (error) {
+      console.log('error');
+    }
+  });
+}
+// {
+//     "lat": 39.23616,
+//     "lon": -94.90855
+// // }
+// cb({
+//   summary: {
+//     query: '451 ash ln lansing ks 66043 united states',
+//     queryType: 'NON_NEAR',
+//     queryTime: 4,
+//     numResults: 1,
+//     offset: 0,
+//     totalResults: 1,
+//     fuzzyLevel: 1,
+//   },
+//   results: [
+//     {
+//       type: 'Point Address',
+//       id: 'US/PAD/p0/38007996',
+//       score: 15.6196298599,
+//       address: {
+//         streetNumber: '451',
+//         streetName: 'Ash Lane',
+//         municipality: 'Lansing',
+//         countrySecondarySubdivision: 'Leavenworth',
+//         countrySubdivision: 'KS',
+//         countrySubdivisionName: 'Kansas',
+//         postalCode: '66043',
+//         extendedPostalCode: '66043-6286',
+//         countryCode: 'US',
+//         country: 'United States',
+//         countryCodeISO3: 'USA',
+//         freeformAddress: '451 Ash Lane, Lansing, KS 66043',
+//         localName: 'Lansing',
+//       },
+//       position: {
+//         lat: 39.23616,
+//         lon: -94.90855,
+//       },
+//       viewport: {
+//         topLeftPoint: {
+//           lat: 39.23706,
+//           lon: -94.90971,
+//         },
+//         btmRightPoint: {
+//           lat: 39.23526,
+//           lon: -94.90739,
+//         },
+//       },
+//       entryPoints: [
+//         {
+//           type: 'main',
+//           position: {
+//             lat: 39.23642,
+//             lon: -94.90854,
+//           },
+//         },
+//       ],
+//     },
+//   ],
+// });
