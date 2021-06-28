@@ -3,8 +3,7 @@ const mymap = L.map('mapid', { doubleClickZoom: false }).locate({
   maxZoom: 16,
 });
 
-//**  https://api.tomtom.com/search/2/geocode/query%url%encoded.js?key=dwnHP6iVdrF1BBg428u08xVJ4t3gGRln */
-//??  results.position.lat :: results.position.lon
+
 const display = document.getElementById('counter');
 const mark = document.getElementById('mark');
 const form = document.getElementById('fileForm');
