@@ -111,7 +111,7 @@ function getLinks(arr, arr2) {
   arr.forEach(function (el) {
     const str = el;
     arr2.push(
-      `https://api.tomtom.com/search/2/geocode/${str}.json?limit=1&language=en-US&key=dwnHP6iVdrF1BBg428u08xVJ4t3gGRln`
+      `https://api.tomtom.com/search/2/geocode/${str}.json?limit=1&language=en-US&key=yourapikey`
     );
   });
 }
