@@ -18,8 +18,9 @@
     <div class="input-csv">
       <form id="fileForm">
         <label for="input-file">CSV File:</label>
-        <input type="file" name="csv" class="csv" id="csvFile" accept=".csv" />
-        <input type="submit" value="Submit"/>
+        <input  type="file" name="csv" class="btn" id="csvFile" accept=".csv" />
+        <input class="btn" type="submit" value="Submit"/>
+        <button class="btn" id="mark">Mark</button>
     </div>
     <div id="mapid"></div>
 
@@ -39,9 +40,10 @@
       integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
       crossorigin=""
     ></script>
+    <script type="text/javascript" src="papaparse.min.js"></script>
     <script src="script.js"></script>
     <script>
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
         attribution:
           '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>',
         maxZoom: 5,
