@@ -1,0 +1,9 @@
+{
+  "name": "salesmap",
+  "version": "0.0.1",
+  "description": "Etsy Sales Map",
+  "main": "script.js",
+  "dependencies": {
+    "lodash": "^4.17.21"
+  }
+}
