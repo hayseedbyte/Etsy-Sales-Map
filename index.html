@@ -13,45 +13,110 @@
       integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
       crossorigin=""
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="Leaflet.BigImage.css" />
   </head>
   <body>
-    <div class="input-csv">
-      <form id="fileForm">
-        <label for="input-file">CSV File:</label>
-        <input  type="file" name="csv" class="btn" id="csvFile" accept=".csv" />
-        <input class="btn" type="submit" value="Submit"/>
-        <button class="btn" id="mark">Mark</button>
-    </div>
-    <div id="mapid"></div>
+    <div class="top-bar">
+      <div class="input-form">
+        <form id="fileForm">
+          <label for="csvFile">
+            <span class="custom-file-upload"> Upload CSV Files</span>
+          </label>
+          <span class="custom-file-upload" id="submit">Submit</span>
+          <input
+            type="file"
+            name="csv"
+            class="input-csv"
+            id="csvFile"
+            accept=".csv"
+            multiple
+          />
+        </form>
+      </div>
+      <div class="display-total">
+        <h3>
+          <span id="total"></span>
+          <p id="list"></p>
+        </h3>
+      </div>
+      <div class="push">
+        <span class="custom-file-upload" id="instructions">Instructions</span>
+        <div class="hidden" id="modal">
+          <div id="insModal">
+            <p></p>
+            <ul class="ins-list">
+              <li>Login in to Etsy Shop Manager.</li>
+              <li>Go to Settings > Options > Download Data.</li>
+              <li>Under "CSV TYPE" choose "ORDERS".</li>
+              <li>Pick the Year you want to map*</li>
+              <li>
+                To get all the orders for that year, leave the month blank
+              </li>
+            </ul>
+            <p>
+              **If you want to map all your orders, and you've been selling on
+              Etsy for multiple years, you'll have to download a separate CSV
+              for each year.
+            </p>
 
+            <p>
+              To show your orders on the map, click "Upload CSV Files" and hold
+              down CTRL to select multiple files. Once you've selected all your
+              csv files from Etsy, click open. Finally, click "Submit" and your
+              markers will show up on the map.
+            </p>
+            <p>
+              You can click the printer icon in the top right corner of the map
+              to download an image of your map.
+            </p>
+            <p>
+              For performance reasons, only one
+              <img class="ins-pin" src="pin-24x34-wb3d.png" alt="map pin" />
+              marker per state/province is generated for the US and Canada and
+              only one marker per country for everywhere else. However, if you
+              click on a marker, it will tell you how many orders you've shipped
+              to that area. Total orders are displayed at the top.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div id="mapid"></div>
+    </div>
     <div class="footer">
-      © OpenStreetMap contributors.OpenStreetMap® is open data, licensed under
-      the Open Data Commons Open Database License (ODbL) by the OpenStreetMap
-      Foundation (OSMF).<br />© 2021 WILDBOT3D®
+      <!-- <div class="icon"><img src="pin-full.svg"></div> -->
+      <span class="wildbot">© 2021 WILDBOT3D® </span>| Data by
+      <a href="http://openstreetmap.org">OpenStreetMap</a>, under
+      <a href="http://www.openstreetmap.org/copyright">ODbL</a>.
     </div>
-
     <script src="node_modules\leaflet\dist\leaflet.js"></script>
-    <!-- <script type="text/javascript" src="data.json"></script>
-    <script type="text/javascript" src="javascript.js"></script> -->
-
-    <!-- Make sure you put this AFTER Leaflet's CSS -->
     <script
       src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
       integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
       crossorigin=""
     ></script>
+    <script src="regions.js"></script>
+    <script src="countriesBoundaries.js"></script>
+    <script src="./node_modules/leaflet.bigimage/src/Leaflet.BigImage.js"></script>
     <script type="text/javascript" src="papaparse.min.js"></script>
     <script src="script.js"></script>
     <script>
-      L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-        attribution:
-          '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>',
-        maxZoom: 5,
-        // id: 'mapbox/streets-v11',
-        tileSize: 512,
-        zoomOffset: -1,
-        // accessToken: 'your.mapbox.access.token'
-      }).addTo(mymap);
+      const Esri_OceanBasemap = L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}',
+        { nowrap: true },
+        {
+          attribution:
+            'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
+          maxZoom: 5,
+        }
+      ).addTo(mymap);
     </script>
   </body>
 </html>
