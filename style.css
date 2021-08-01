@@ -1,9 +1,17 @@
+:root {
+  --saf: #f2b632;
+  --ox: #032b43;
+  --gate: #bb4430;
+  --turq: ##32d2f2;
+  --wht: #fff;
+}
+
 #mapid {
   height: 90vh;
   z-index: 0;
 }
 body {
-  background-color: #f2b632;
+  background-color: var(--saf);
   color: #252839;
 }
 .footer {
