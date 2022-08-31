@@ -1,14 +1,28 @@
+:root {
+  --tag-green: #80a03e;
+  --tag-orange: #d98b4c;
+  --tag-blue: #6cc9d9;
+  --space: #476a6f;
+  --bridge: #bb4430;
+  --wb-blue: #252839;
+  --max-yellow: #f2b632;
+}
+
 #mapid {
   height: 90vh;
   z-index: 0;
 }
 body {
-  background-color: #f2b632;
+  background-color: var(--max-yellow);
   color: #252839;
 }
 .footer {
-  color: #252839;
+  background: rgb(103, 112, 119);
+  /* width: 90vw; */
+  display: flex;
+  padding: 10px;
 }
+
 a {
   color: #252839;
   font-weight: bold;
@@ -17,12 +31,29 @@ a {
   font-family: 'Luckiest Guy', cursive;
 }
 
+.top-bar {
+  display: flex;
+  align-content: space-around;
+  align-items: center;
+}
+.instructions {
+  flex-grow: 1;
+  align-items: flex-end;
+}
+.display-total {
+  flex-grow: 5;
+}
+.push {
+  margin-left: auto;
+}
+
 .hidden {
   display: none;
 }
 .shown {
   display: block;
 }
+
 #modal {
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
@@ -48,7 +79,8 @@ a {
   max-width: 30vw;
   z-index: 1;
   position: fixed;
-  top: 20vh;
+  /* top: 20vh; */
+  bottom: 0;
   right: 0;
   -webkit-animation-name: slideIn;
   -webkit-animation-duration: 0.4s;
@@ -116,6 +148,24 @@ a {
   position: relative;
   top: 1px;
 }
+.copyright {
+  color: var(--max-yellow);
+  justify-content: flex-start;
+}
+.bottom-nav {
+  /* display: flex; */
+  /* align-items: flex-end; */
+  margin: auto;
+}
+.bottom-nav a {
+  text-decoration: none;
+  padding: 15px;
+  color: var(--wb-blue);
+}
+
+.bottom-nav a:hover {
+  color: var(--max-yellow);
+}
 /* Add Animation */
 @-webkit-keyframes slideIn {
   from {
@@ -156,40 +206,7 @@ a {
     opacity: 1;
   }
 }
-.list {
-  padding: 6px 8px;
-  font: 14px/16px Arial, Helvetica, sans-serif;
-  background: white;
-  background: rgba(255, 255, 255, 0.8);
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
-  max-width: 10vw;
-  float: right;
-  z-index: 1;
-  display: flex;
-  align-items: baseline;
-  overflow: hidden;
-}
-.list h4 {
-  margin: 0 0 5px;
-  color: #777;
-}
-
-.top-bar {
-  display: flex;
-  align-content: space-around;
-  align-items: center;
-}
-.instructions {
-  flex-grow: 1;
-  align-items: flex-end;
-}
-.display-total {
-  flex-grow: 5;
-}
-.push {
-  margin-left: auto;
-}
-.icon {
-  background-color: white;
+.etsy-copyright {
+  font-family: 'Cabin', sans-serif;
+  color: var(--max-yellow);
 }
