@@ -1049,7 +1049,7 @@ const regions = [
 
   {
     code: 'LV',
-    name: 'latvia',
+    name: 'Latvia',
     lat: 56.879635,
     lng: 24.603189,
     orders: 0,
@@ -2613,7 +2613,7 @@ const countryList = {
   Kenya: 'KE',
   Kiribati: 'KI',
   "Korea (the Democratic People's Republic of)": 'KP',
-  'Korea (the Republic of)': 'KR',
+  'South Korea': 'KR',
   Kuwait: 'KW',
   Kyrgyzstan: 'KG',
   "Lao People's Democratic Republic": 'LA',
