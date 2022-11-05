@@ -9,12 +9,29 @@
 *.user
 *.userosscache
 *.sln.docstates
-*csv
+*.csv
 *.zip
-
+*.png
+*.svc
 *.jpg
-
-
+Unused
+coords.js
+again.json
+coords.json
+*.json
+countries-110m.js
+map.py
+*.svg
+*.webmanifest
+browserconfig.xml
+*.vscode
+uploads
+world.geo.json-master
+favicon_sales-map
+CAProvincesGeoJSON.js
+node_helper.js
+*.ico
+node_modules - Copy
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
@@ -353,3 +370,6 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+html_code.html
+Untitled Diagram.drawio

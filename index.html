@@ -20,6 +20,34 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="Leaflet.BigImage.css" />
+    <link
+      href="https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css"
+      rel="stylesheet"
+    />
+   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+   <link rel="manifest" href="/site.webmanifest">
+   <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#476a6f">
+   <meta name="apple-mobile-web-app-title" content="Etsy Sales Map">
+   <meta name="application-name" content="Etsy Sales Map">
+   <meta name="msapplication-TileColor" content="#476a6f">
+   <meta name="msapplication-TileImage" content="/mstile-144x144.png">
+   <meta name="theme-color" content="#476a6f">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-WEYGN496CM"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+
+      gtag('config', 'G-WEYGN496CM');
+    </script>
   </head>
   <body>
     <div class="top-bar">
@@ -42,10 +70,8 @@
       <div class="display-total">
         <h3>
           <span id="total"></span>
-          <p id="list"></p>
         </h3>
       </div>
-      <div class="push">
         <span class="custom-file-upload" id="instructions">Instructions</span>
         <div class="hidden" id="modal">
           <div id="insModal">
@@ -87,14 +113,25 @@
         </div>
       </div>
     </div>
+    <div class="list" id="list"></div>
     <div>
       <div id="mapid"></div>
     </div>
     <div class="footer">
-      <!-- <div class="icon"><img src="pin-full.svg"></div> -->
-      <span class="wildbot">© 2021 WILDBOT3D® </span>| Data by
-      <a href="http://openstreetmap.org">OpenStreetMap</a>, under
+      <div class="copyright">
+        &copy;2021 Wilbot3D&reg;
+      </div>
+      | Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under
       <a href="http://www.openstreetmap.org/copyright">ODbL</a>.
+      <div class="bottom-nav">
+        <a href="https://wildbot.app">HOME</a
+        ><a href="https://wildbot.app/sales-map">SALES MAP</a
+        ><a href="https://wildbot.app/taggregator">TAGGREGATOR</a>
+      </div>
+      <div class="etsy-copyright">
+        The term 'Etsy' is a trademark of Etsy, Inc. This application is not
+        endorsed or certified by Etsy, Inc.
+      </div>
     </div>
     <script src="node_modules\leaflet\dist\leaflet.js"></script>
     <script
@@ -102,21 +139,31 @@
       integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
       crossorigin=""
     ></script>
-    <script src="regions.js"></script>
-    <script src="countriesBoundaries.js"></script>
-    <script src="./node_modules/leaflet.bigimage/src/Leaflet.BigImage.js"></script>
+    <script type="text/javascript" src="us-states.js"></script>
+    <script type="text/javascript" src="countries.geo.js"></script>
+    <script type="text/javascript" src="canada-province.js"></script>
+    <!-- <script type="text/javascript" src="coords.js"></script> -->
+    <!-- <script type="text/javascript" src="countries-110m.js"></script> -->
+    <script type="text/javascript" src="https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js"></script>
+    <script type="text/javascript" src="regions.js"></script>
+    <script type="text/javascript" src="./node_modules/leaflet.bigimage/src/Leaflet.BigImage.js"></script>
     <script type="text/javascript" src="papaparse.min.js"></script>
-    <script src="script.js"></script>
+    <script type="text/javascript" src="script.js"></script>
     <script>
-      const Esri_OceanBasemap = L.tileLayer(
-        'https://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}',
-        { nowrap: true },
-        {
-          attribution:
-            'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
-          maxZoom: 5,
-        }
-      ).addTo(mymap);
+      // const Esri_OceanBasemap = L.tileLayer(
+      //   'https://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}',
+      //   { nowrap: true },
+      //   {
+      //     attribution:
+      //       'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
+      //   },
+      //   { maxZoom: 5 }
+      // ).addTo(mymap);
+      var CartoDB_PositronNoLabels = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
+	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+	subdomains: 'abcd',
+	maxZoom: 20
+}).addTo(mymap);
     </script>
   </body>
 </html>
