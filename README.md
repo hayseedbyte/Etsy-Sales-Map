@@ -24,6 +24,10 @@ Total orders are displayed at the top.
 
 ## Acknowledgements
 
+- [Leaflet by Volodymyr Agafonkin](https://leaflet.com) :ukraine:
+- [Leaflet BigImage by pasichnykvasyl](https://github.com/pasichnykvasyl/Leaflet.BigImage)
+- [PapaParse](https://www.papaparse.com/)
+
 ### GeoJson Data By
 
 - <https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv002/Europe/>
