@@ -18,6 +18,19 @@ Finally, click **_Submit_** and your markers will show up on the map.
 
 You can click the printer icon in the top right corner of the map to download an image of your map.
 
-For performance reasons it only generates one marker per state/province in the US and Canada and only one marker per country for everywhere else. However, you can click on a marker and it will show how many orders you've shipped to that area.
+This version shades each region based on the number of orders shipped there. A legend is in the bottom right corner and number of orders in a box above that.
 
 Total orders are displayed at the top.
+
+## Acknowledgements
+
+### GeoJson Data By
+
+- <https://cplx.vm.uni-freiburg.de/storage/enroute-GeoJSONv002/Europe/>
+- <https://covid.tou.it/assets/geojson/>
+- [TopoJson](https://github.com/topojson/world-atlas)
+
+### Other Data By
+
+- [Map Tiles by Carto.com](https://carto.com/attributions)
+- [OpenStreetMap](http://openstreetmap.org)
