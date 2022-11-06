@@ -20,6 +20,8 @@ You can click the printer icon in the top right corner of the map to download an
 
 For performance reasons it only generates one marker per state/province in the US and Canada and only one marker per country for everywhere else. However, you can click on a marker and it will show how many orders you've shipped to that area.
 
+The chloropleth branch shades each region based on how many orders you've shipped there instead of placing a marker.
+
 Total orders are displayed at the top.
 
 ## Acknowledgements
