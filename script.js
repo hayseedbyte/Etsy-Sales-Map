@@ -1,5 +1,4 @@
 //* Map
-
 const mymap = L.map(
   'mapid',
   {
@@ -20,14 +19,6 @@ let geojson = L.geoJson(mapData, {
   style: style,
   onEachFeature,
 }).addTo(mymap);
-// geojson = L.geoJson(mapData, { style: style }).addTo(mymap);
-// var layer = L.featureLayer('countries.geo.json')
-//   .loadURL(
-//     'https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_50m_admin_0_countries.geojson'
-//   )
-//   .addTo(mymap);
-// L.geoJson(countriesjson, { style: style }).addTo(mymap);
-// ['#edf8b1', '#7fcdbb', '#2c7fb8'];
 
 const myIcon = L.icon({
   iconUrl:
@@ -45,8 +36,6 @@ L.control.textbox = L.Control.extend({
     text.innerHTML = '<strong></strong>';
   },
 });
-
-//* Variables/Constants
 const items = [];
 const contents = [];
 const data = [];
@@ -85,28 +74,109 @@ const monthFull = [
   'November',
   'December',
 ];
+const smallCountries = [
+  'Vatican City',
+  'Monaco',
+  'Gibraltar',
+  'Tokelau',
+  'Nauru',
+  'Saint Barthelemy',
+  'Tuvalu',
+  'Macau',
+  'Sint Maarten',
+  'Saint Martin',
+  'Bermuda',
+  'San Marino',
+  'Guernsey',
+  'Anguilla',
+  'Montserrat',
+  'Jersey',
+  'Wallis and Futuna',
+  'British Virgin Islands',
+  'Liechtenstein',
+  'Aruba',
+  'Marshall Islands',
+  'American Samoa',
+  'Cook Islands',
+  'Saint Pierre and Miquelon',
+  'Niue',
+  'Saint Kitts and Nevis',
+  'Cayman Islands',
+  'Maldives',
+  'Malta',
+  'Grenada',
+  'United States Virgin Islands',
+  'Mayotte',
+  'Saint Vincent and the Grenadines',
+  'Barbados',
+  'Antigua and Barbuda',
+  'Curacao',
+  'Seychelles',
+  'Palau',
+  'Northern Mariana Islands',
+  'Andorra',
+  'Guam',
+  'Isle of Man',
+  'Saint Lucia',
+  'Micronesia',
+  'Singapore',
+  'Tonga',
+  'Dominica',
+  'Bahrain',
+  'Kiribati',
+  'Turks and Caicos Islands',
+  'Sao Tome and Principe',
+  'Hong Kong',
+  'Martinique',
+  'Faroe Islands',
+  'Guadeloupe',
+  'Comoros',
+  'Mauritius',
+  'Reunion',
+  'Luxembourg',
+  'Samoa',
+  'Cape Verde',
+  'French Polynesia',
+  'Trinidad and Tobago',
+  'Brunei',
+  'Palestine',
+  'Puerto Rico',
+  'Cyprus',
+  'Lebanon',
+  'Gambia',
+  'Jamaica',
+  'Qatar',
+  'Falkland Islands',
+  'Vanuatu',
+  'Montenegro',
+  'Bahamas',
+  'Timor Leste',
+  'Eswatini',
+  'Kuwait',
+  'Fiji',
+  'New Caledonia',
+  'Hawaii',
+];
 
 csvFile.addEventListener('input', e => {
   e.preventDefault();
   const files = csvFile.files;
-  return (
-    new Promise(resolve => {
-      resolve(parseFiles(files, data));
-      return data;
-    })
-      .then(data => flatten(data))
-      .then(flattened => getLocations(flattened))
-      .then(locations => getPlaces(locations))
-      .then(places => mapOrders(places))
-      .then(regions => getShipped(regions))
-      // .then(regionsShipped => addMarker(regionsShipped))
-      .then(regionsShipped => getListData(regionsShipped))
-      .then(listData => sumOrders(listData))
-      .then(totals => sumTotal(totals))
-      .then(sum => addSum(sum))
-      .then(regions => featureOrders(regions))
-      .catch(error => console.error(error))
-  );
+  return new Promise(resolve => {
+    resolve(parseFiles(files, data));
+    return data;
+  })
+    .then(data => flatten(data))
+    .then(flattened => getLocations(flattened))
+    .then(locations => getPlaces(locations))
+    .then(places => mapOrders(places))
+    .then(regions => getShipped(regions))
+    .then(regionsShipped => addMarker(regionsShipped))
+    .then(regionsShipped => getListData(regionsShipped))
+    .then(listData => sumOrders(listData))
+    .then(totals => sumTotal(totals))
+    .then(sum => addSum(sum))
+    .then(regions => featureOrders(regions))
+    .catch(error => console.error(error));
 });
 instructions.addEventListener('click', function (e) {
   e.preventDefault;
@@ -136,7 +206,7 @@ submit.addEventListener('click', function (e) {
     .then(locations => getPlaces(locations))
     .then(places => mapOrders(places))
     .then(regions => getShipped(regions))
-    // .then(regionsShipped => addMarker(regionsShipped))
+    .then(regionsShipped => addMarker(regionsShipped))
     .then(regionsShipped => getListData(regionsShipped))
     .then(listData => sumOrders(listData))
     .then(totals => sumTotal(totals))
@@ -235,11 +305,12 @@ const getPlaces = function (locations) {
   for (let i = 0; i < locations.length; i++) {
     const el = locations[i];
     const loc = el[1];
+    console.log(loc);
     if (loc !== undefined) {
       places.push(loc);
     }
   }
-  // console.log('places ' + places);
+  console.log('places ' + places);
   return places;
 };
 
@@ -269,21 +340,21 @@ function getShipped(arr) {
 function addMarker(arr) {
   const item = arr[0];
   for (let i = 0; i < item.length; i++) {
-    const lat = item[i].lat;
-    const lng = item[i].lng;
-    markers++;
-    marker.bindPopup('Popup content');
-    marker.on('mouseover', function (e) {
-      this.openPopup();
-    });
-    marker.on('mouseout', function (e) {
-      this.closePopup();
-    });
-    L.marker([lat, lng], { icon: myIcon })
-      .addTo(mymap)
-      .bindPopup(`${item[i].name}, ${item[i].orders}`);
+    if (smallCountries.includes(item[i].name)) {
+      const lat = item[i].lat;
+      const lng = item[i].lng;
+      markers++;
+      L.marker([lat, lng], { icon: myIcon })
+        .addTo(mymap)
+        .bindPopup(`${item[i].name}, ${item[i].orders}`)
+        .on('mouseover', function (e) {
+          this.openPopup();
+        })
+        .on('mouseout', function (e) {
+          this.closePopup();
+        });
+    }
   }
-
   return arr;
 }
 
@@ -296,17 +367,17 @@ function getListData(arr) {
   return listData;
 }
 function getColor(d) {
-  return d > 150
+  return d > 750
     ? '#222434'
-    : d > 100
+    : d > 500
     ? '#252839'
-    : d > 50
+    : d > 250
     ? '#464C58'
-    : d > 20
+    : d > 100
     ? '#575E68'
-    : d > 10
+    : d > 50
     ? '#757D83'
-    : d > 5
+    : d > 10
     ? '#8D9498'
     : d > 0
     ? '#A0A7AA'
@@ -335,7 +406,7 @@ const featureOrders = function (arr) {
   for (let i = 0; i < arr.length; i++) {
     const e = arr[i];
     if (e.orders > 0) {
-      if ((e.code[0] === 'U' && e.code[1] === 'S') || e.code === 'PR') {
+      if (e.code[0] === 'U' && e.code[1] === 'S') {
         if (
           e.code === 'USAE' ||
           e.code === 'USAP' ||
@@ -426,7 +497,7 @@ const guide = L.control({ position: 'bottomright' });
 
 guide.onAdd = function (map) {
   const div = L.DomUtil.create('div', 'control guide');
-  const grades = [1, 5, 10, 20, 50, 100, 150];
+  const grades = [1, 10, 50, 100, 250, 500, 750];
   const labels = [];
   let from, to;
 
