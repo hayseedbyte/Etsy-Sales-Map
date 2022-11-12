@@ -2440,6 +2440,7 @@ const regions = [
   },
 
   {
+
     code: 'USMP',
     name: 'Northern Mariana Islands',
     lat: 15.1063896,
@@ -2447,13 +2448,17 @@ const regions = [
     orders: 0,
   },
 
+
   {
+
     code: 'PR',
     name: 'Puerto Rico',
     lat: 18.200178,
     lng: -66.664513,
     orders: 0,
+
   },
+
   {
     code: 'USVI',
     name: 'U.S. Virgin Islands',
@@ -2643,7 +2648,9 @@ const countryList = {
   Nauru: 'NR',
   Nepal: 'NP',
   'The Netherlands': 'NL',
+
   'New Caledonia': 'NC',
+
   'New Zealand': 'NZ',
   Nicaragua: 'NI',
   Niger: 'NE',

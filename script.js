@@ -1,4 +1,7 @@
+
+'use strict';
 //* Map
+
 const mymap = L.map(
   'mapid',
   {
@@ -14,11 +17,13 @@ const mymap = L.map(
   setView: true,
 });
 
+
 const mapData = [statesData, countriesjson, canadaprv];
 let geojson = L.geoJson(mapData, {
   style: style,
   onEachFeature,
 }).addTo(mymap);
+
 
 const myIcon = L.icon({
   iconUrl:
@@ -36,6 +41,7 @@ L.control.textbox = L.Control.extend({
     text.innerHTML = '<strong></strong>';
   },
 });
+
 const items = [];
 const contents = [];
 const data = [];
@@ -318,6 +324,7 @@ const mapOrders = function (places) {
   for (let i = 0; i < places.length; i++) {
     const el = places[i];
     const region = regions.find(region => region.code === el);
+
     if (region != undefined) {
       region.orders++;
     } else {
@@ -516,3 +523,4 @@ guide.onAdd = function (map) {
 };
 
 guide.addTo(mymap);
+

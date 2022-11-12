@@ -11,10 +11,13 @@
 #mapid {
   height: 90vh;
   z-index: 0;
+
 }
 body {
   background-color: var(--max-yellow);
+
   color: #252839;
+  font-weight: bold;
 }
 .footer {
   background: rgb(103, 112, 119);
@@ -53,6 +56,7 @@ a {
 .shown {
   display: block;
 }
+
 
 #modal {
   position: fixed; /* Stay in place */
@@ -210,6 +214,7 @@ a {
   font-family: 'Cabin', sans-serif;
   color: var(--max-yellow);
 }
+
 .YlGnBu .q0-3 {
   fill: rgb(237, 248, 177);
 }
@@ -245,3 +250,4 @@ a {
 .ins-pin {
   height: 16px;
 }
+
