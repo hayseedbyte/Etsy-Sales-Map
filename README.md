@@ -18,9 +18,7 @@ Finally, click **_Submit_** and your markers will show up on the map.
 
 You can click the printer icon in the top right corner of the map to download an image of your map.
 
-This version shades each region based on the number of orders shipped there. A legend is in the bottom right corner and number of orders in a box above that.
-
-Total orders are displayed at the top.
+Regions will be shaded based on the number of orders you've shipped to customers there. For the really small regions, a marker will show on the map. The US and Canada are divided into states/provinces. Hovering the cursor over the region will show it's name and the number of orders in a box on the right. Total orders are displayed at the top.
 
 ## Acknowledgements
 
