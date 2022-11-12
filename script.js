@@ -47,11 +47,13 @@ const insModal = document.getElementById('insModal');
 const modal = document.getElementById('modal');
 const list = document.getElementById('list');
 const total = document.getElementById('total');
+const topBar = document.getElementById('top');
 const places = [];
 const info = [];
 const shipCountries = [];
 let flattened = [];
 let markers = 0;
+let allTotal;
 const unique = [];
 let coordsObj;
 const control = L.control();
@@ -195,10 +197,10 @@ modal.addEventListener('click', function (e) {
 submit.addEventListener('click', function (e) {
   e.preventDefault();
   console.log('Form Submitted');
+  document.getElementById('top').style.display = 'none';
+  document.getElementById('mapid').style.height = '98vh';
   const merged = new Promise(function (resolve, reject) {
-    // console.log('data' + data);
     resolve((flattened = data.flat()));
-    // console.log('flattened' + flattened);
     return flattened;
     reject(console.error(error));
   })
@@ -262,6 +264,7 @@ function sumOrders(arr) {
 
 function addSum(int) {
   total.innerHTML += `Total Orders: ${int}`;
+  allTotal = int;
   return regions;
 }
 
@@ -292,7 +295,6 @@ function getLocations(orders) {
       info.push([`${country}`]);
     }
   }
-  // console.log('locations' + locations.length);
   return locations;
 }
 const getDates = function (str) {
@@ -305,12 +307,10 @@ const getPlaces = function (locations) {
   for (let i = 0; i < locations.length; i++) {
     const el = locations[i];
     const loc = el[1];
-    console.log(loc);
     if (loc !== undefined) {
       places.push(loc);
     }
   }
-  console.log('places ' + places);
   return places;
 };
 
@@ -413,8 +413,6 @@ const featureOrders = function (arr) {
           e.code === 'USVI' ||
           e.code === 'USUM'
         ) {
-          console.log(e.name);
-
           continue;
         } else {
           const features = statesData.features;
@@ -429,7 +427,6 @@ const featureOrders = function (arr) {
         if (b != undefined) {
           b.properties.orders = e.orders;
         } else {
-          console.log(e.name);
           continue;
         }
       } else {
@@ -440,8 +437,6 @@ const featureOrders = function (arr) {
           const x = e.orders;
           c.properties.orders = x;
         } else {
-          console.log(e.name);
-
           continue;
         }
       }
@@ -485,7 +480,11 @@ control.update = function (props) {
   const contents = props
     ? `<b>${props.name}</b><br />${props.orders} orders shipped`
     : 'Hover over a state';
-  this._div.innerHTML = `<h3>Orders Shipped</h3>${contents}`;
+  if (allTotal !== undefined) {
+    this._div.innerHTML = `<h3>${allTotal} Orders Shipped</h3>${contents}`;
+  } else {
+    this._div.innerHTML = `<h3>Orders Shipped</h3>${contents}`;
+  }
 };
 control.addTo(mymap);
 

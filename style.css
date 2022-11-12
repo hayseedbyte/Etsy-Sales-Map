@@ -242,3 +242,6 @@ a {
 .control h3 {
   border-bottom: #252839 solid 0.1vh;
 }
+.ins-pin {
+  height: 16px;
+}
