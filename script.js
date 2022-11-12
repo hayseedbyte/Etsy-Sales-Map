@@ -1,6 +1,4 @@
-'use strict';
 //* Map
-
 const mymap = L.map(
   'mapid',
   {
@@ -15,6 +13,12 @@ const mymap = L.map(
 ).locate({
   setView: true,
 });
+
+const mapData = [statesData, countriesjson, canadaprv];
+let geojson = L.geoJson(mapData, {
+  style: style,
+  onEachFeature,
+}).addTo(mymap);
 
 const myIcon = L.icon({
   iconUrl:
@@ -32,8 +36,6 @@ L.control.textbox = L.Control.extend({
     text.innerHTML = '<strong></strong>';
   },
 });
-
-//* Variables/Constants
 const items = [];
 const contents = [];
 const data = [];
@@ -45,14 +47,16 @@ const insModal = document.getElementById('insModal');
 const modal = document.getElementById('modal');
 const list = document.getElementById('list');
 const total = document.getElementById('total');
-const coords = [];
+const topBar = document.getElementById('top');
 const places = [];
 const info = [];
 const shipCountries = [];
 let flattened = [];
 let markers = 0;
+let allTotal;
 const unique = [];
 let coordsObj;
+const control = L.control();
 const legend = [];
 const listData = [];
 const locations = [];
@@ -72,7 +76,91 @@ const monthFull = [
   'November',
   'December',
 ];
-csvFile.addEventListener('input', function (e) {
+const smallCountries = [
+  'Vatican City',
+  'Monaco',
+  'Gibraltar',
+  'Tokelau',
+  'Nauru',
+  'Saint Barthelemy',
+  'Tuvalu',
+  'Macau',
+  'Sint Maarten',
+  'Saint Martin',
+  'Bermuda',
+  'San Marino',
+  'Guernsey',
+  'Anguilla',
+  'Montserrat',
+  'Jersey',
+  'Wallis and Futuna',
+  'British Virgin Islands',
+  'Liechtenstein',
+  'Aruba',
+  'Marshall Islands',
+  'American Samoa',
+  'Cook Islands',
+  'Saint Pierre and Miquelon',
+  'Niue',
+  'Saint Kitts and Nevis',
+  'Cayman Islands',
+  'Maldives',
+  'Malta',
+  'Grenada',
+  'United States Virgin Islands',
+  'Mayotte',
+  'Saint Vincent and the Grenadines',
+  'Barbados',
+  'Antigua and Barbuda',
+  'Curacao',
+  'Seychelles',
+  'Palau',
+  'Northern Mariana Islands',
+  'Andorra',
+  'Guam',
+  'Isle of Man',
+  'Saint Lucia',
+  'Micronesia',
+  'Singapore',
+  'Tonga',
+  'Dominica',
+  'Bahrain',
+  'Kiribati',
+  'Turks and Caicos Islands',
+  'Sao Tome and Principe',
+  'Hong Kong',
+  'Martinique',
+  'Faroe Islands',
+  'Guadeloupe',
+  'Comoros',
+  'Mauritius',
+  'Reunion',
+  'Luxembourg',
+  'Samoa',
+  'Cape Verde',
+  'French Polynesia',
+  'Trinidad and Tobago',
+  'Brunei',
+  'Palestine',
+  'Puerto Rico',
+  'Cyprus',
+  'Lebanon',
+  'Gambia',
+  'Jamaica',
+  'Qatar',
+  'Falkland Islands',
+  'Vanuatu',
+  'Montenegro',
+  'Bahamas',
+  'Timor Leste',
+  'Eswatini',
+  'Kuwait',
+  'Fiji',
+  'New Caledonia',
+  'Hawaii',
+];
+
+csvFile.addEventListener('input', e => {
   e.preventDefault();
   const files = csvFile.files;
   return new Promise(resolve => {
@@ -89,6 +177,7 @@ csvFile.addEventListener('input', function (e) {
     .then(listData => sumOrders(listData))
     .then(totals => sumTotal(totals))
     .then(sum => addSum(sum))
+    .then(regions => featureOrders(regions))
     .catch(error => console.error(error));
 });
 instructions.addEventListener('click', function (e) {
@@ -108,9 +197,12 @@ modal.addEventListener('click', function (e) {
 submit.addEventListener('click', function (e) {
   e.preventDefault();
   console.log('Form Submitted');
+  document.getElementById('top').style.display = 'none';
+  document.getElementById('mapid').style.height = '98vh';
   const merged = new Promise(function (resolve, reject) {
     resolve((flattened = data.flat()));
     return flattened;
+    reject(console.error(error));
   })
     .then(flattened => getLocations(flattened))
     .then(locations => getPlaces(locations))
@@ -121,6 +213,8 @@ submit.addEventListener('click', function (e) {
     .then(listData => sumOrders(listData))
     .then(totals => sumTotal(totals))
     .then(sum => addSum(sum))
+    .then(regions => featureOrders(regions))
+    // .then(L.geoJson(mapData, { style: style }).addTo(mymap))
     .catch(error => console.error(error));
 });
 function readFile(file, arr) {
@@ -170,12 +264,12 @@ function sumOrders(arr) {
 
 function addSum(int) {
   total.innerHTML += `Total Orders: ${int}`;
+  allTotal = int;
+  return regions;
 }
 
 function getLocations(orders) {
-  console.log('orders', orders);
   let data = orders;
-  console.log('data', data);
   let int = data.length - 2;
   let item = data[int][''];
   startDate = data[int]['Sale Date'];
@@ -224,10 +318,13 @@ const mapOrders = function (places) {
   for (let i = 0; i < places.length; i++) {
     const el = places[i];
     const region = regions.find(region => region.code === el);
-    if (region.orders != undefined) {
+    if (region != undefined) {
       region.orders++;
+    } else {
+      console.log('error with mapOrders' + el);
     }
   }
+
   return regions;
 };
 
@@ -243,12 +340,20 @@ function getShipped(arr) {
 function addMarker(arr) {
   const item = arr[0];
   for (let i = 0; i < item.length; i++) {
-    const lat = item[i].lat;
-    const lng = item[i].lng;
-    markers++;
-    L.marker([lat, lng], { icon: myIcon })
-      .addTo(mymap)
-      .bindPopup(`${item[i].name}, ${item[i].orders}`);
+    if (smallCountries.includes(item[i].name)) {
+      const lat = item[i].lat;
+      const lng = item[i].lng;
+      markers++;
+      L.marker([lat, lng], { icon: myIcon })
+        .addTo(mymap)
+        .bindPopup(`${item[i].name}, ${item[i].orders}`)
+        .on('mouseover', function (e) {
+          this.openPopup();
+        })
+        .on('mouseout', function (e) {
+          this.closePopup();
+        });
+    }
   }
   return arr;
 }
@@ -258,5 +363,156 @@ function getListData(arr) {
   for (let i = 0; i < item.length; i++) {
     listData.push([item[i].name, item[i].orders]);
   }
+
   return listData;
 }
+function getColor(d) {
+  return d > 750
+    ? '#222434'
+    : d > 500
+    ? '#252839'
+    : d > 250
+    ? '#464C58'
+    : d > 100
+    ? '#575E68'
+    : d > 50
+    ? '#757D83'
+    : d > 10
+    ? '#8D9498'
+    : d > 0
+    ? '#A0A7AA'
+    : '#ffffff';
+}
+
+function style(feature) {
+  return {
+    fillColor: getColor(feature.properties.orders),
+    weight: 2,
+    opacity: 1,
+    color: '#F2B632',
+    dashArray: '3',
+    fillOpacity: 1,
+  };
+}
+const updateColor = function () {
+  mymap.removeLayer(L.geoJson);
+  var geojson = L.geoJson(mapData, {
+    style: style,
+    onEachFeature: onEachFeature,
+  }).addTo(mymap);
+};
+
+const featureOrders = function (arr) {
+  for (let i = 0; i < arr.length; i++) {
+    const e = arr[i];
+    if (e.orders > 0) {
+      if (e.code[0] === 'U' && e.code[1] === 'S') {
+        if (
+          e.code === 'USAE' ||
+          e.code === 'USAP' ||
+          e.code === 'USVI' ||
+          e.code === 'USUM'
+        ) {
+          continue;
+        } else {
+          const features = statesData.features;
+          const a = features.filter(
+            feature => feature.properties.name === arr[i].name
+          )[0];
+          a.properties.orders = e.orders;
+        }
+      } else if (e.code[0] === 'C' && e.code[1] === 'A') {
+        const features = canadaprv.features;
+        const b = features.filter(obj => obj.properties.name === e.name)[0];
+        if (b != undefined) {
+          b.properties.orders = e.orders;
+        } else {
+          continue;
+        }
+      } else {
+        const c = countriesjson.features.filter(
+          feature => feature.properties.name === arr[i].name
+        )[0];
+        if (c != undefined) {
+          const x = e.orders;
+          c.properties.orders = x;
+        } else {
+          continue;
+        }
+      }
+    } else {
+      continue;
+    }
+  }
+  updateColor();
+  return arr;
+};
+function onEachFeature(feature, layer) {
+  layer.on({
+    mouseover: highlightFeature,
+    mouseout: resetHighlight,
+    click: zoomToFeature,
+  });
+}
+function highlightFeature(e) {
+  const layer = e.target;
+
+  layer.setStyle({
+    weight: 5,
+    color: '#252839',
+    dashArray: '',
+    fillOpacity: 1,
+    fillColor: '#F2B632',
+  });
+
+  layer.bringToFront();
+  control.update(layer.feature.properties);
+}
+function resetHighlight(e) {
+  geojson.resetStyle(e.target);
+}
+control.onAdd = function (map) {
+  this._div = L.DomUtil.create('div', 'control');
+  this.update();
+  return this._div;
+};
+control.update = function (props) {
+  const contents = props
+    ? `<b>${props.name}</b><br />${props.orders} orders shipped`
+    : 'Hover over a state';
+  if (allTotal !== undefined) {
+    this._div.innerHTML = `<h3>${allTotal} Orders Shipped</h3>${contents}`;
+  } else {
+    this._div.innerHTML = `<h3>Orders Shipped</h3>${contents}`;
+  }
+};
+control.addTo(mymap);
+
+function zoomToFeature(e) {
+  mymap.fitBounds(e.target.getBounds());
+}
+
+const guide = L.control({ position: 'bottomright' });
+
+guide.onAdd = function (map) {
+  const div = L.DomUtil.create('div', 'control guide');
+  const grades = [1, 10, 50, 100, 250, 500, 750];
+  const labels = [];
+  let from, to;
+
+  for (let i = 0; i < grades.length; i++) {
+    from = grades[i];
+    to = grades[i + 1];
+
+    labels.push(
+      `<i style="background:${getColor(from + 1)}; color: ${getColor(
+        from + 1
+      )}">**</i> ${from}${to ? `&ndash;${to}` : '+'}`
+    );
+  }
+
+  div.innerHTML = labels.join('<br>');
+  return div;
+};
+
+guide.addTo(mymap);

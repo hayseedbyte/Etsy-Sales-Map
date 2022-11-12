@@ -18,11 +18,7 @@ Finally, click **_Submit_** and your markers will show up on the map.
 
 You can click the printer icon in the top right corner of the map to download an image of your map.
 
-For performance reasons it only generates one marker per state/province in the US and Canada and only one marker per country for everywhere else. However, you can click on a marker and it will show how many orders you've shipped to that area.
-
-The chloropleth branch shades each region based on how many orders you've shipped there instead of placing a marker.
-
-Total orders are displayed at the top.
+Regions will be shaded based on the number of orders you've shipped to customers there. For the really small regions, a marker will show on the map. The US and Canada are divided into states/provinces. Hovering the cursor over the region will show it's name and the number of orders in a box on the right. Total orders are displayed at the top.
 
 ## Acknowledgements
 
